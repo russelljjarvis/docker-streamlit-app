@@ -114,8 +114,8 @@ ADD requirements.txt ./
 ENV APP_HOME /app
 
 WORKDIR $APP_HOME
-COPY . ./
-
+ADD align_data_sources.py .
+RUN python3 align_data_sources.py
 
 # --------------- Configure Streamlit ---------------
 RUN mkdir -p /root/.streamlit

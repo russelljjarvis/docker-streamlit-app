@@ -17,4 +17,30 @@ try:
     st.success('nltk works')
 except:
     st.text('nltk fails')
+import pickle
+import os
+if not(os.path.exists('data/traingDats.p')):
+    os.system('mv traingDats.p?dl=0 data/traingDats.p')
+    os.system('mv benchmarks.p?dl=0 data/benchmarks.p')
+
+
+if os.path.exists("data/traingDats.p?dl=0") and not os.path.exists("data/traingDats.p"):
+    os.system('mv traingDats.p?dl=0 data/traingDats.p')
+    os.system('mv benchmarks.p?dl=0 data/benchmarks.p')
+
+try:
+    pickle.load(open('data/benchmarks.p','rb'))
+    st.success('pickle data sources downloaded')
+except:
+    st.text('fail')
+
+import nltk
+try:
+    from nltk.corpus import stopwords
+    stop_words = stopwords.words('english')
+except:
+    nltk.download('punkt')
+    nltk.download('stopwords')  
+st.success('NLTK data sources downloaded')
+  
     #Raise(Exception())

@@ -74,8 +74,7 @@ RUN conda update --yes conda
 RUN conda install --yes gcc_linux-64
 # bendigo community dental
 # 54547994
-ADD . .
-ADD requirements.txt ./
+
 
 # Copy local code to the container image.
 
@@ -109,14 +108,15 @@ RUN bash -c 'echo -e "\
 	" > requirements.txt'
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt \
 	&& rm -rf requirements.txt
-
+RUN pip install --upgrade streamlit
+ADD . .
+ADD requirements.txt ./
 ENV APP_HOME /app
 
 WORKDIR $APP_HOME
 COPY . ./
 
 
-RUN pip install --upgrade streamlit
 # --------------- Configure Streamlit ---------------
 RUN mkdir -p /root/.streamlit
 

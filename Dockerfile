@@ -72,18 +72,50 @@ ENV LANG=C.UTF-8
 RUN conda --version
 RUN conda update --yes conda
 RUN conda install --yes gcc_linux-64
-
+# bendigo community dental
+# 54547994
 ADD . .
 ADD requirements.txt ./
 
 # Copy local code to the container image.
+
+RUN bash -c 'echo -e "\
+	regex\n\
+	pdfminer\n\	
+	PyPDF2\n\
+	pycld2\n\
+	nltk\n\
+	selenium\n\
+	delver\n\
+	pdfminer\n\
+	pyvirtualdisplay\n\
+	textstat\n\
+	fsspec>=0.3.3\n\
+	textblob\n\
+	twython\n\
+	streamlit\n\
+	wordcloud\n\
+	seaborn\n\
+	bs4\n\
+	natsort\n\
+	dask\n\
+	plotly\n\
+	tabulate\n\
+	chart_studio\n\
+	tqdm\n\
+	crossref-commons\n\
+	sklearn\n\
+	pipenv\n\
+	" > requirements.txt'
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt \
+	&& rm -rf requirements.txt
+
 ENV APP_HOME /app
 
 WORKDIR $APP_HOME
 COPY . ./
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt \
-	&& rm -rf requirements.txt
+
 RUN pip install --upgrade streamlit
 # --------------- Configure Streamlit ---------------
 RUN mkdir -p /root/.streamlit
@@ -92,8 +124,14 @@ RUN bash -c 'echo -e "\
 	[server]\n\
 	enableCORS = false\n\
 	" > /root/.streamlit/config.toml'
-
+RUN touch /root/.streamlit/credentials.toml
+RUN echo "[general]" >> ~/.streamlit/credentials.toml
+RUN echo 'email = "replace_me@gmail.com"' >> ~/.streamlit/credentials.toml
+#echo "[server]" >> ~/.streamlit/config.toml
+#echo 'headless = true' >> ~/.streamlit/config.toml
+#echo 'enableCORS=false' >> ~/.streamlit/config.toml
 EXPOSE 8501
+EXPOSE 8080
 
 
 # --------------- Export envirennement variable ---------------
